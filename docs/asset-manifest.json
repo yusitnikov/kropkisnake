@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/kropkisnake/static/js/main.68e937bb.js",
+    "main.js": "/kropkisnake/static/js/main.eb5c3fd0.js",
     "index.html": "/kropkisnake/index.html",
-    "main.68e937bb.js.map": "/kropkisnake/static/js/main.68e937bb.js.map"
+    "main.eb5c3fd0.js.map": "/kropkisnake/static/js/main.eb5c3fd0.js.map"
   },
   "entrypoints": [
-    "static/js/main.68e937bb.js"
+    "static/js/main.eb5c3fd0.js"
   ]
 }
