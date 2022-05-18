@@ -17,8 +17,18 @@ export const App = () => {
     const [prize, setPrize] = useState<Point | undefined>(undefined);
     const [isBlack, setIsBlack] = useState(false);
     const [remainingGrow, setRemainingGrow] = useState(0);
+    const [record, setRecord] = useState(Number(window.localStorage.kropkiSnakeRecord || 0));
 
     const [head, neck] = snake;
+
+    const setSnakeAndRecord = (snake: Point[]) => {
+        setSnake(snake);
+
+        if (snake.length > record) {
+            setRecord(snake.length);
+            window.localStorage.kropkiSnakeRecord = snake.length;
+        }
+    }
 
     const genPrize = (snake: Point[]) => {
         const possibilities: Point[] = [];
@@ -66,7 +76,7 @@ export const App = () => {
             newSnake.pop();
         }
 
-        setSnake(newSnake);
+        setSnakeAndRecord(newSnake);
 
         if (prize === undefined) {
             genPrize(newSnake);
@@ -110,28 +120,54 @@ export const App = () => {
             left: (width - cellSize * 10) / 2,
             top: cellSize / 2,
         }}>
-            <button
-                type={"button"}
+            <div
                 style={{
                     position: "absolute",
                     left: -borderWidth / 2,
                     top: -borderWidth / 2,
                     width: cellSize * 9 + borderWidth,
                     height: cellSize * 0.5 + borderWidth,
-                    border: `${borderWidth}px solid black`,
-                    boxSizing: "border-box",
-                }}
-                disabled={gameState === GameState.Started}
-                onClick={() => {
-                    const newSnake = [{x: 4, y: 8}];
-                    setGameState(GameState.Started);
-                    setSnake(newSnake);
-                    setDirection({x: 0, y: -1});
-                    genPrize(newSnake);
+                    fontFamily: "Lato, Arial",
+                    fontSize: cellSize * 0.4,
+                    lineHeight: `${cellSize * 0.5 + borderWidth}px`,
                 }}
             >
-                Start
-            </button>
+                <div style={{position: "absolute"}}>
+                    Record: {record}
+                </div>
+
+                {gameState !== GameState.Init && <div style={{
+                    position: "absolute",
+                    left: cellSize * 3 + borderWidth / 2,
+                }}>
+                    Length: {snake.length}
+                </div>}
+
+                <button
+                    type={"button"}
+                    style={{
+                        position: "absolute",
+                        right: 0,
+                        width: cellSize * 3 + borderWidth,
+                        height: cellSize * 0.5 + borderWidth,
+                        border: `${borderWidth}px solid black`,
+                        boxSizing: "border-box",
+                        fontFamily: "inherit",
+                        fontSize: "inherit",
+                        lineHeight: `${cellSize * 0.5 - borderWidth}px`,
+                    }}
+                    disabled={gameState === GameState.Started}
+                    onClick={() => {
+                        const newSnake = [{x: 4, y: 8}];
+                        setGameState(GameState.Started);
+                        setSnakeAndRecord(newSnake);
+                        setDirection({x: 0, y: -1});
+                        genPrize(newSnake);
+                    }}
+                >
+                    Start
+                </button>
+            </div>
 
             <svg
                 style={{
