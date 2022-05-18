@@ -194,13 +194,17 @@ export const App = () => {
                 }}
                 viewBox={"-0.5 -0.5 10 10"}
             >
-                {gameState !== GameState.Init && snake.map(({x, y}) => <rect
+                {gameState !== GameState.Init && snake.map(({x, y}, index) => <rect
                     key={`${x}-${y}`}
                     x={x}
                     y={y}
                     width={1}
                     height={1}
-                    fill={gameState === GameState.Finished ? "#f00" : "#0f0"}
+                    fill={
+                        index === 0
+                            ? (gameState === GameState.Finished ? "#c00" : "#0c0")
+                            : (gameState === GameState.Finished ? "#f00" : "#0f0")
+                    }
                     stroke={"none"}
                     strokeWidth={0}
                 />)}
