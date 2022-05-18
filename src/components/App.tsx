@@ -4,12 +4,15 @@ import {useInterval} from "../hooks/useInterval";
 import {GameState} from "../types/GameState";
 import {useEventListener} from "../hooks/useEventListener";
 import {Point} from "../types/Point";
+import {useHash} from "../hooks/useHash";
 
 const borderWidth = 4;
 
 export const App = () => {
     const {width, height} = useWindowSize();
     const cellSize = Math.min(width / 10, height / 11);
+
+    const hash = useHash();
 
     const [gameState, setGameState] = useState(GameState.Init);
     const [snake, setSnake] = useState<Point[]>([{x: 0, y: 0}]);
@@ -46,7 +49,7 @@ export const App = () => {
         setRemainingGrow(0);
     }
 
-    useInterval(200, () => {
+    useInterval(1000 / Number(hash.substring(1) || 5), () => {
         if (gameState !== GameState.Started) {
             return;
         }
