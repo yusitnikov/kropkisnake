@@ -89,8 +89,26 @@ export const App = () => {
         }
     };
 
-    useEventListener(window, "keydown", ({code}: KeyboardEvent) => {
-        switch (code) {
+    const handlePlayPause = () => {
+        if (gameState === GameState.Started) {
+            setGameState(GameState.Paused);
+            return;
+        }
+
+        if (gameState === GameState.Paused) {
+            setGameState(GameState.Started);
+            return;
+        }
+
+        const newSnake = [{x: 4, y: 8}];
+        setGameState(GameState.Started);
+        setSnakeAndRecord(newSnake);
+        setDirection({x: 0, y: -1});
+        genPrize(newSnake);
+    };
+
+    useEventListener(window, "keydown", (ev: KeyboardEvent) => {
+        switch (ev.code) {
             case "ArrowLeft":
             case "KeyA":
                 handleArrow(-1, 0);
@@ -106,6 +124,11 @@ export const App = () => {
             case "ArrowDown":
             case "KeyS":
                 handleArrow(0, 1);
+                break;
+            case "Space":
+            case "KeyP":
+                handlePlayPause();
+                ev.preventDefault();
                 break;
         }
     });
@@ -156,16 +179,9 @@ export const App = () => {
                         fontSize: "inherit",
                         lineHeight: `${cellSize * 0.5 - borderWidth}px`,
                     }}
-                    disabled={gameState === GameState.Started}
-                    onClick={() => {
-                        const newSnake = [{x: 4, y: 8}];
-                        setGameState(GameState.Started);
-                        setSnakeAndRecord(newSnake);
-                        setDirection({x: 0, y: -1});
-                        genPrize(newSnake);
-                    }}
+                    onClick={handlePlayPause}
                 >
-                    Start
+                    {gameState === GameState.Started ? "Pause" : "Start"}
                 </button>
             </div>
 
