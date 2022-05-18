@@ -55,7 +55,6 @@ export const App = () => {
         const newY = head.y + direction.y;
         if (newX < 0 || newX >= 9 || newY < 0 || newY >= 9 || snake.some(({x, y}) => x === newX && y === newY)) {
             setGameState(GameState.Finished);
-            setPrize(undefined);
             return;
         }
 
